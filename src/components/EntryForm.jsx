@@ -11,6 +11,19 @@ const emptyForm = (keepDate = '', keepCategory = '') => ({
   notes: '',
 })
 
+const inputStyle = {
+  backgroundColor: 'var(--color-surface)',
+  border: '1px solid var(--color-border)',
+  color: 'var(--color-text-primary)',
+  borderRadius: '0.5rem',
+  padding: '0.5rem 0.75rem',
+  fontSize: '0.875rem',
+  width: '100%',
+  outline: 'none',
+}
+
+const errorBorder = { border: '1px solid #ef4444' }
+
 export default function EntryForm({ onSubmit }) {
   const [form, setForm] = useState(emptyForm())
   const [errors, setErrors] = useState({})
@@ -45,46 +58,58 @@ export default function EntryForm({ onSubmit }) {
     setErrors({})
   }
 
-  const inputClass = (field) =>
-    `w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 ${errors[field] ? 'border-red-400' : 'border-gray-300'}`
+  const fieldStyle = (field) => ({ ...inputStyle, ...(errors[field] ? errorBorder : {}) })
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white border border-gray-200 rounded-xl p-6">
+    <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl p-6" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
+
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-        <input type="date" value={form.date} onChange={e => set('date', e.target.value)} className={inputClass('date')} />
+        <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-text-secondary)' }}>Date</label>
+        <input type="date" value={form.date} onChange={e => set('date', e.target.value)} style={fieldStyle('date')} />
       </div>
+
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-        <select value={form.category} onChange={e => set('category', e.target.value)} className={inputClass('category')}>
+        <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-text-secondary)' }}>Category</label>
+        <select value={form.category} onChange={e => set('category', e.target.value)} style={{ ...fieldStyle('category'), appearance: 'auto' }}>
           <option value="">Select a category…</option>
           {CATEGORIES.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
         </select>
-        {errors.category && <p className="text-xs text-red-500 mt-1">{errors.category}</p>}
+        {errors.category && <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.category}</p>}
       </div>
+
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Activity</label>
-        <input type="text" value={form.activity} onChange={e => set('activity', e.target.value)} placeholder="What did you work on?" className={inputClass('activity')} />
-        {errors.activity && <p className="text-xs text-red-500 mt-1">{errors.activity}</p>}
+        <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-text-secondary)' }}>Activity</label>
+        <input type="text" value={form.activity} onChange={e => set('activity', e.target.value)} placeholder="What did you work on?" style={fieldStyle('activity')} />
+        {errors.activity && <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.activity}</p>}
       </div>
+
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+        <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-text-secondary)' }}>Duration (minutes)</label>
         <div className="flex gap-2 mb-2">
           {QUICK_ADD.map(n => (
-            <button key={n} type="button" onClick={() => set('duration', String(Number(form.duration || 0) + n))}
-              className="text-xs font-medium px-2.5 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700">
+            <button key={n} type="button"
+              onClick={() => set('duration', String(Number(form.duration || 0) + n))}
+              className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-all hover:brightness-110"
+              style={{ backgroundColor: 'var(--color-border)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border-bright)' }}>
               +{n}
             </button>
           ))}
         </div>
-        <input type="number" min="1" value={form.duration} onChange={e => set('duration', e.target.value)} placeholder="0" className={inputClass('duration')} />
-        {errors.duration && <p className="text-xs text-red-500 mt-1">{errors.duration}</p>}
+        <input type="number" min="1" value={form.duration} onChange={e => set('duration', e.target.value)} placeholder="0" style={fieldStyle('duration')} />
+        {errors.duration && <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.duration}</p>}
       </div>
+
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Notes <span className="text-gray-400">(optional)</span></label>
-        <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} placeholder="Any context or reflection…" className={inputClass('notes')} />
+        <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+          Notes <span style={{ color: 'var(--color-text-muted)' }}>(optional)</span>
+        </label>
+        <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={3}
+          placeholder="Any context or reflection…"
+          style={{ ...fieldStyle('notes'), resize: 'vertical' }} />
       </div>
-      <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors">
+
+      <button type="submit" className="w-full font-semibold text-sm py-3 rounded-xl transition-all hover:brightness-110"
+        style={{ background: 'linear-gradient(135deg, #2563eb, #4f46e5)', color: 'white', boxShadow: '0 4px 20px #2563eb44' }}>
         Save Entry
       </button>
     </form>

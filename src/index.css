@@ -3,4 +3,18 @@
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
+  --color-bg: #080c14;
+  --color-surface: #0f1520;
+  --color-card: #151d2e;
+  --color-card-hover: #1a2337;
+  --color-border: #1e2a42;
+  --color-border-bright: #2a3a58;
+  --color-text-primary: #e8edf8;
+  --color-text-secondary: #7b8fb5;
+  --color-text-muted: #3d4f6e;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
 }

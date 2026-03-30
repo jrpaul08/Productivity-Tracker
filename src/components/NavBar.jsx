@@ -8,25 +8,33 @@ const links = [
 
 export default function NavBar() {
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
-      <div className="max-w-5xl mx-auto px-4 flex items-center gap-6 h-14">
-        <span className="font-semibold text-gray-800 mr-4">Job Search</span>
-        {links.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={to === '/'}
-            className={({ isActive }) =>
-              `text-sm font-medium pb-0.5 border-b-2 transition-colors ${
-                isActive
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
-              }`
-            }
-          >
-            {label}
-          </NavLink>
-        ))}
+    <nav style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }} className="sticky top-0 z-10">
+      <div className="max-w-5xl mx-auto px-6 flex items-center gap-8 h-14">
+        <span className="font-bold text-sm tracking-widest uppercase" style={{ color: 'var(--color-text-secondary)', letterSpacing: '0.15em' }}>
+          Job Search
+        </span>
+        <div className="flex items-center gap-1">
+          {links.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `text-sm font-medium px-3 py-1.5 rounded-md transition-all ${
+                  isActive
+                    ? 'text-white'
+                    : 'hover:text-white'
+                }`
+              }
+              style={({ isActive }) => isActive
+                ? { backgroundColor: 'var(--color-border-bright)', color: 'white' }
+                : { color: 'var(--color-text-secondary)' }
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+        </div>
       </div>
     </nav>
   )
